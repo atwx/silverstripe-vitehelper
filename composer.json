@@ -1,6 +1,6 @@
 {
-    "name": "silverstripe-module/skeleton",
-    "description": "A skeleton for Silverstripe CMS modules.",
+    "name": "atwx/silverstripe-vitehelper",
+    "description": "A helper for vite.",
     "type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
