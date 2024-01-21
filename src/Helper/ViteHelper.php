@@ -10,16 +10,52 @@ use SilverStripe\View\ViewableData;
 
 class ViteHelper extends ViewableData implements TemplateGlobalProvider
 {
+    /**
+     * Path to the vitejs manifest file. Will be prepended with BASE_PATH
+     *
+     * @config
+     * @var string
+     */
+    private static $manifest_path = "/app/client/dist/.vite/manifest.json";
+
+    /**
+     * URL of the vitejs output directory. Will be prepended with RESOURCES_DIR
+     *
+     * @config
+     * @var string
+     */
+    private static $output_url = "/app/client/dist/";
+
+    /**
+     * CSS to be added to the editor. This has to be the key in the manifest.json
+     *
+     * @config
+     * @var string
+     */
+    private static $editor_css = null;
+
+    /**
+     * URL of the vitejs dev server
+     *
+     * @var string
+     */
+    private $devServerUrl;
+
+
     public function __construct()
     {
         parent::__construct();
         $this->devServerUrl = Environment::getEnv('VITE_DEV_SERVER_URL');
-        $this->manifestPath = BASE_PATH . Environment::getEnv('VITE_MANIFEST_PATH');
-        $this->outputUrl = RESOURCES_DIR . Environment::getEnv('VITE_OUTPUT_DIR');
+    }
 
-        if (!$this->devServerUrl && !$this->manifestPath) {
-            user_error('One of VITE_DEV_SERVER_URL or VITE_MANIFEST_PATH have to be set', E_USER_ERROR);
+    public static function getEditorCss(): string|null
+    {
+        $instance = singleton(self::class);
+        if ($instance->config()->get('editor_css')) {
+            $editorCss = $instance->config()->get('editor_css');
+            return self::Vite($editorCss);
         }
+        return null;
     }
 
     public static function ViteClient(): string
@@ -34,13 +70,16 @@ class ViteHelper extends ViewableData implements TemplateGlobalProvider
     public static function Vite($path): string
     {
         $instance = singleton(self::class);
+
         if ($instance->devServerUrl) {
             return Convert::raw2att("{$instance->devServerUrl}/{$path}");
         } else {
-            if(!file_exists($instance->manifestPath))
-                user_error('VITE_MANIFEST_PATH is set but the file does not exist. Did you build?', E_USER_ERROR);
-            $manifest = json_decode(file_get_contents($instance->manifestPath), true);
-            $path = $instance->outputUrl . $manifest[$path]['file'];
+            $manifestPath = BASE_PATH . $instance->config()->get('manifest_path');
+            if(!file_exists($manifestPath))
+                user_error('manifest file does not exist. Did you build?', E_USER_ERROR);
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+            $outputUrl = RESOURCES_DIR . $instance->config()->get('output_url');
+            $path = $outputUrl . $manifest[$path]['file'];
             return Convert::raw2att($path);
         }
     }

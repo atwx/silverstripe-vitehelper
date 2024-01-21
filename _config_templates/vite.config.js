@@ -1,6 +1,5 @@
 import {defineConfig} from 'vite'
 
-
 // https://vitejs.dev/config/
 export default defineConfig(({command}) => {
   return {
@@ -11,11 +10,8 @@ export default defineConfig(({command}) => {
     alias: {
       alias: [{find: '@', replacement: './app/client/src'}],
     },
-    // base: (command === 'build') ? '/_resources/app/client/dist/' : '/', // TODO: .env variable, only on build
-    // base: '/_resources/app/client/dist/',
-    publicDir: 'app/client/public',
+    base: './',
     build: {
-      // cssCodeSplit: false,
       outDir: './app/client/dist',
       manifest: true,
       sourcemap: true,
@@ -23,6 +19,7 @@ export default defineConfig(({command}) => {
         input: {
           'main.js': './app/client/src/js/main.js',
           'main.scss': './app/client/src/scss/main.scss',
+          'editor.scss': './app/client/src/scss/editor.scss',
         }
       },
     },

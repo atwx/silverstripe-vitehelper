@@ -1,4 +1,11 @@
 <?php
+use SilverStripe\Forms\HTMLEditor\HTMLEditorConfig;
+use Atwx\ViteHelper\Helper\ViteHelper;
 
-// You need this file if you don't have anything in the _config folder. If that folder exists
-// and is not empty then you can delete this file.
+$editorConfig = HTMLEditorConfig::get('cms');
+if(ViteHelper::getEditorCss()) {
+    $editorCss = ViteHelper::getEditorCss();
+    $contentCss = $editorConfig->getContentCSS();
+    $contentCss[] = $editorCss;
+    $editorConfig->setContentCSS($contentCss);
+}
