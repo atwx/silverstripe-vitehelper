@@ -67,7 +67,7 @@ class ViteHelper extends ViewableData implements TemplateGlobalProvider
         return '';
     }
 
-    public static function Vite($path): string
+    public static function Vite($path, int $getCSSFile = null): string
     {
         $instance = singleton(self::class);
 
@@ -79,8 +79,13 @@ class ViteHelper extends ViewableData implements TemplateGlobalProvider
                 user_error('manifest file does not exist. Did you build?', E_USER_ERROR);
             $manifest = json_decode(file_get_contents($manifestPath), true);
             $outputUrl = RESOURCES_DIR . $instance->config()->get('output_url');
-            $path = $outputUrl . $manifest[$path]['file'];
-            return Convert::raw2att($path);
+
+            if ($getCSSFile) {
+                $path = $outputUrl . $manifest[$path]['css'][$getCSSFile - 1];
+            } else {
+                $path = $outputUrl . $manifest[$path]['file'];
+            }
+            return Convert::raw2att("/{$path}");
         }
     }
 
