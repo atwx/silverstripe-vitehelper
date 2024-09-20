@@ -7,6 +7,7 @@ use SilverStripe\Core\Environment;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\View\TemplateGlobalProvider;
 use SilverStripe\View\ViewableData;
+use SilverStripe\Control\Director;
 
 class ViteHelper extends ViewableData implements TemplateGlobalProvider
 {
@@ -85,7 +86,7 @@ class ViteHelper extends ViewableData implements TemplateGlobalProvider
             } else {
                 $path = $outputUrl . $manifest[$path]['file'];
             }
-            return Convert::raw2att("/{$path}");
+            return Convert::raw2att(Director::absoluteURL($path));
         }
     }
 
