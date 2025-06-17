@@ -2,14 +2,14 @@
 
 namespace Atwx\ViteHelper\Helper;
 
+use SilverStripe\Model\ModelData;
 use SilverStripe\Core\Convert;
 use SilverStripe\Core\Environment;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\View\TemplateGlobalProvider;
-use SilverStripe\View\ViewableData;
 use SilverStripe\Control\Director;
 
-class ViteHelper extends ViewableData implements TemplateGlobalProvider
+class ViteHelper extends ModelData implements TemplateGlobalProvider
 {
     /**
      * Path to the vitejs manifest file. Will be prepended with BASE_PATH
