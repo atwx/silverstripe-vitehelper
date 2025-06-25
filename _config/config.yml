@@ -1,3 +1,7 @@
 ---
 Name: vitehelper
 ---
+
+SilverStripe\Admin\AdminController:
+  extensions:
+    - Atwx\ViteHelper\Extensions\AdminControllerExtension
