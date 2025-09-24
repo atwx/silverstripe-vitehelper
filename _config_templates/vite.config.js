@@ -1,5 +1,9 @@
 import {defineConfig} from 'vite'
 
+/*
+Simple Vite config with code in app/client/src
+*/
+
 // https://vitejs.dev/config/
 export default defineConfig(({command}) => {
   return {
