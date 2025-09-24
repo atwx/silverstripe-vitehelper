@@ -38,7 +38,7 @@ normally `_resources`.
 
 ## Dev Mode
 
-To use vite in dev mode, you need to add the dev server url in your `.env`:
+To use vite in dev mode, you need to add the dev server url to your `.env`:
 
 ```dotenv
 VITE_DEV_SERVER_URL=http://localhost:3000
@@ -46,7 +46,7 @@ VITE_DEV_SERVER_URL=http://localhost:3000
 
 ## Editor CSS
 
-As the build files have hashes, we need to get the correct file name for the editor css.
+As the build files have hashes, the module needs to get the correct file name for the editor css.
 
 You can use the following in your `mysite.yml` to get the correct file name:
 
@@ -57,7 +57,7 @@ Atwx\ViteHelper\Helper\ViteHelper:
 
 ## Vite Config
 
-We normally use the following config for vite. This defines:
+Our default config for vite defines:
 
 - the input files:
     - main.js: The entry point for main js
@@ -98,4 +98,37 @@ export default defineConfig(({command}) => {
 })
 ```
 
-Partly inspired by https://github.com/brandcom/silverstripe-vite
+## Working With Themes
+See [Config Templates](_config_templates/vite_tailwind.config.js) for an example that works with themes and has also TailwindCSS configured.
+
+You need to tell vite where your theme is located, e.g. in your `app/_config/themes.yml`: 
+
+```yaml
+Atwx\ViteHelper\Helper\ViteHelper:
+  manifest_path: "/themes/<mytheme>/dist/.vite/manifest.json"
+  output_url: "/themes/<mytheme>/dist/"
+  editor_css: 'src/css/editor.css'
+```
+
+In your theme you can include Vite like:
+
+```
+    $ViteClient.RAW
+    <link rel="stylesheet" href="$Vite("src/css/app.css")">
+    <script type="module" src="$Vite("src/javascript/index.js")"></script>
+```
+**Note**: The paths need to match the `rollupOptions` in your `vite.config.js`.
+
+## Developing With DDEV
+If you have ddev running, please export the relevant ports in your `.ddev/config.yml`: 
+
+```yaml
+web_extra_exposed_ports:
+    - name: vite
+      container_port: 5173
+      http_port: 5172
+      https_port: 5173
+```
+## Thanks to
+
+This module is inspired by https://github.com/brandcom/silverstripe-vite
