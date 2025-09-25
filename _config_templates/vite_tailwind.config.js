@@ -7,7 +7,7 @@ Vite config to use in Silverstripe module, with tailwind config
 
 // https://vitejs.dev/config/
 export default defineConfig(({command}) => {
-    const primary_url = process.env.DDEV_PRIMARY_URL || 'http://localhost';
+    const primary_url = process.env.DDEV_PRIMARY_URL_WITHOUT_PORT || 'http://localhost';
     const origin = primary_url.replace(/:\d+$/, "") + `:5173`;
     return {
         server: {
@@ -27,7 +27,6 @@ export default defineConfig(({command}) => {
         },
         // base: (command === 'build') ? '/_resources/themes/mytheme/dist/' : '/', // TODO: .env variable, only on build
         base: './',
-        publicDir: '/public',
         build: {
             // cssCodeSplit: false,
             outDir: './dist',
