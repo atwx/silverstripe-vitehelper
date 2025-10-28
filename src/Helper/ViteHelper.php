@@ -1,6 +1,7 @@
 <?php
 namespace Atwx\ViteHelper\Helper;
 
+use RuntimeException;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
@@ -64,7 +65,7 @@ class ViteHelper extends ViewableData implements TemplateGlobalProvider
         }
         $manifestPath = BASE_PATH . self::config()->get('manifest_path');
         if (!file_exists($manifestPath)) {
-            user_error('manifest file does not exist. Did you build?', E_USER_ERROR);
+            throw new RuntimeException('manifest file does not exist. Did you build?');
         }
         $manifest = json_decode(file_get_contents($manifestPath), true);
         $outputUrl = RESOURCES_DIR . self::config()->get('output_url');
