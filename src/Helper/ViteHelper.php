@@ -9,8 +9,9 @@ use SilverStripe\Core\Environment;
 use SilverStripe\Model\ModelData;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\View\TemplateGlobalProvider;
+use SilverStripe\View\ViewableData;
 
-class ViteHelper extends ModelData implements TemplateGlobalProvider
+class ViteHelper extends ViewableData implements TemplateGlobalProvider
 {
     /**
      * Path to the vitejs manifest file. Will be prepended with BASE_PATH
