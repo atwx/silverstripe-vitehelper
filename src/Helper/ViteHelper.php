@@ -68,15 +68,14 @@ class ViteHelper extends ModelData implements TemplateGlobalProvider
             throw new RuntimeException('manifest file does not exist. Did you build?');
         }
         $manifest = json_decode(file_get_contents($manifestPath), true);
-        $outputUrl = RESOURCES_DIR . self::config()->get('output_url');
+        $outputUrl = BASE_URL . '/' . RESOURCES_DIR . self::config()->get('output_url');
 
         if ($getCSSFile) {
             $path = $outputUrl . $manifest[$path]['css'][$getCSSFile - 1];
         } else {
             $path = $outputUrl . $manifest[$path]['file'];
         }
-        $absolutePath = Director::absoluteURL($path);
-        return Convert::raw2att($absolutePath);
+        return Convert::raw2att($path);
     }
 
     public static function get_template_global_variables(): array
