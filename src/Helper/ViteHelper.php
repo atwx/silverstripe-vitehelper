@@ -2,7 +2,6 @@
 namespace Atwx\ViteHelper\Helper;
 
 use RuntimeException;
-use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Convert;
 use SilverStripe\Core\Environment;
@@ -68,7 +67,7 @@ class ViteHelper extends ModelData implements TemplateGlobalProvider
             throw new RuntimeException('manifest file does not exist. Did you build?');
         }
         $manifest = json_decode(file_get_contents($manifestPath), true);
-        $outputUrl = BASE_URL . '/' . RESOURCES_DIR . self::config()->get('output_url');
+        $outputUrl = rtrim(BASE_URL, '/') . '/' . RESOURCES_DIR . self::config()->get('output_url');
 
         if ($getCSSFile) {
             $path = $outputUrl . $manifest[$path]['css'][$getCSSFile - 1];
