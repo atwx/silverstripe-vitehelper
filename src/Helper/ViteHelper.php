@@ -87,7 +87,15 @@ class ViteHelper extends ModelData implements TemplateGlobalProvider
 
     private static function getDevServerURL()
     {
-        return Environment::getEnv('VITE_DEV_SERVER_URL');
+        $url = Environment::getEnv('VITE_DEV_SERVER_URL');
+        if ($url) {
+            return $url;
+        }
+        $ddevUrl = Environment::getEnv('DDEV_PRIMARY_URL_WITHOUT_PORT');
+        if ($ddevUrl) {
+            return $ddevUrl . ':5173';
+        }
+        return null;
     }
 
     private static function devServerIsRunning(): bool

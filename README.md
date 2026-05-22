@@ -38,11 +38,13 @@ normally `_resources`.
 
 ## Dev Mode
 
-To use vite in dev mode, you need to add the dev server url to your `.env`:
+To use vite in dev mode, set the dev server url in your `.env`:
 
 ```dotenv
 VITE_DEV_SERVER_URL=http://localhost:3000
 ```
+
+Under DDEV this is optional: if `VITE_DEV_SERVER_URL` is not set, the helper falls back to `DDEV_PRIMARY_URL_WITHOUT_PORT` + `:5173`.
 
 ## Editor CSS
 
