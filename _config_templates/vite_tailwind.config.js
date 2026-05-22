@@ -18,15 +18,13 @@ export default defineConfig(({command}) => {
             cors: {
                 origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.ddev\.site)(?::\d+)?$/,
             },
-            watch: {
-                usePolling: true, // Enable polling for file changes
-            }
         },
         alias: {
             alias: [{find: '@', replacement: './src'}],
         },
         // base: (command === 'build') ? '/_resources/themes/mytheme/dist/' : '/', // TODO: .env variable, only on build
         base: './',
+        publicDir: false, // see README — avoids chokidar recursive-scan bug that breaks HMR
         build: {
             // cssCodeSplit: false,
             outDir: './dist',

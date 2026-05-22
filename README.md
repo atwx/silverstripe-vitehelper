@@ -120,7 +120,7 @@ In your theme you can include Vite like:
 **Note**: The paths need to match the `rollupOptions` in your `vite.config.js`.
 
 ## Developing With DDEV
-If you have ddev running, please export the relevant ports in your `.ddev/config.yml`: 
+If you have ddev running, please export the relevant ports in your `.ddev/config.yml`:
 
 ```yaml
 web_extra_exposed_ports:
@@ -129,6 +129,44 @@ web_extra_exposed_ports:
       http_port: 5172
       https_port: 5173
 ```
+
+For DDEV the dev server needs to listen on `0.0.0.0` and emit absolute asset URLs (the page is served from a different origin than Vite). A minimal `vite.config.js`:
+
+```js
+import {defineConfig} from 'vite'
+
+export default defineConfig(({command}) => {
+    const primary_url = process.env.DDEV_PRIMARY_URL || 'http://localhost';
+    const origin = primary_url.replace(/:\d+$/, "") + `:5173`;
+    return {
+        server: {
+            host: '0.0.0.0',
+            port: 5173,
+            strictPort: true,
+            origin: origin,
+            cors: {
+                origin: /https?:\/\/([A-Za-z0-9\-\.]+)?(\.ddev\.site)(?::\d+)?$/,
+            },
+        },
+        base: './',
+        publicDir: false,
+        build: {
+            outDir: './app/client/dist',
+            manifest: true,
+            sourcemap: true,
+            rollupOptions: {
+                input: {
+                    'main.js': './app/client/src/js/main.js',
+                    'main.scss': './app/client/src/scss/main.scss',
+                    'editor.scss': './app/client/src/scss/editor.scss',
+                },
+            },
+        },
+    }
+})
+```
+
+**`publicDir: false` is important.** Vite registers `publicDir` as an extra watch path. When it lies under the project root (the Silverstripe default), chokidar's recursive scan breaks and HMR stops firing for files in `app/client/src`. Set `publicDir: false` (Silverstripe serves static assets itself) or point it to a directory outside the project root.
 ## Thanks to
 
 This module is inspired by https://github.com/brandcom/silverstripe-vite
